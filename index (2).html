@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>The Environmental Impact of Land Use in Food Production</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,700;0,900;1,300;1,700&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --forest:  #1a3a2a;
+      --moss:    #2d5a3d;
+      --leaf:    #4a8c5c;
+      --lime:    #8dc26f;
+      --cream:   #f5f0e8;
+      --paper:   #fdfaf5;
+      --gold:    #c8a84b;
+      --muted:   #6b7b6e;
+      --white:   #ffffff;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--paper);
+      color: var(--forest);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 300;
+      overflow-x: hidden;
+    }
+
+    /* ── HERO with full-bleed photo ── */
+    .hero-image {
+      position: relative;
+      width: 100%;
+      height: 480px;
+      overflow: hidden;
+    }
+
+    .hero-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 40%;
+      display: block;
+      filter: brightness(0.62);
+    }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(10,28,18,0.15) 0%,
+        rgba(10,28,18,0.55) 70%,
+        rgba(10,28,18,0.85) 100%
+      );
+    }
+
+    .hero-content {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 0 32px 44px;
+      text-align: center;
+      opacity: 0;
+      animation: riseIn 1s ease forwards 0.2s;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,255,255,0.12);
+      backdrop-filter: blur(6px);
+      border: 1px solid rgba(255,255,255,0.22);
+      border-radius: 100px;
+      padding: 6px 16px 6px 10px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.9);
+      margin-bottom: 20px;
+    }
+
+    .badge-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--lime);
+    }
+
+    h1 {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(1.9rem, 5vw, 3.4rem);
+      font-weight: 900;
+      line-height: 1.1;
+      color: #fff;
+      text-shadow: 0 2px 20px rgba(0,0,0,0.4);
+    }
+
+    h1 em {
+      font-style: italic;
+      color: #a8d88c;
+    }
+
+    /* ── Intro card ── */
+    .intro-card {
+      max-width: 680px;
+      margin: -32px auto 0;
+      position: relative;
+      z-index: 2;
+      background: var(--white);
+      border-radius: 20px;
+      padding: 32px 36px;
+      box-shadow: 0 8px 40px rgba(26,58,42,0.12);
+      border: 1px solid rgba(74,140,92,0.12);
+      opacity: 0;
+      animation: riseIn 0.9s ease forwards 0.5s;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .intro-card-inner {
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+    }
+
+    .student-avatar {
+      width: 48px; height: 48px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--moss), var(--lime));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.3rem;
+      flex-shrink: 0;
+    }
+
+    .intro-text-block p {
+      font-size: 0.92rem;
+      line-height: 1.72;
+      color: var(--muted);
+    }
+
+    .intro-text-block strong {
+      color: var(--forest);
+      font-weight: 600;
+    }
+
+    /* ── Stats strip ── */
+    .stats-strip {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      max-width: 640px;
+      margin: 28px auto 0;
+      background: var(--forest);
+      border-radius: 16px;
+      overflow: hidden;
+      opacity: 0;
+      animation: riseIn 0.9s ease forwards 0.65s;
+      position: relative;
+      z-index: 1;
+    }
+
+    .stat-item {
+      flex: 1; min-width: 110px;
+      padding: 18px 12px;
+      text-align: center;
+      position: relative;
+    }
+
+    .stat-item + .stat-item::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 20%; height: 60%;
+      width: 1px;
+      background: rgba(255,255,255,0.1);
+    }
+
+    .stat-num {
+      font-family: 'Fraunces', serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--lime);
+      display: block;
+    }
+
+    .stat-lbl {
+      font-size: 0.68rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.45);
+      margin-top: 3px;
+      display: block;
+    }
+
+    /* ── Photo grid ── */
+    .photo-grid {
+      max-width: 860px;
+      margin: 52px auto 0;
+      padding: 0 24px;
+      opacity: 0;
+      animation: riseIn 0.9s ease forwards 0.8s;
+      position: relative;
+      z-index: 1;
+    }
+
+    .photo-grid-label {
+      text-align: center;
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 16px;
+    }
+
+    .photo-row {
+      display: grid;
+      grid-template-columns: 1.6fr 1fr 1fr;
+      gap: 10px;
+      height: 200px;
+    }
+
+    .photo-cell {
+      border-radius: 14px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .photo-cell img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.5s ease;
+    }
+
+    .photo-cell:hover img { transform: scale(1.05); }
+
+    .photo-cell .caption {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 10px 12px 8px;
+      background: linear-gradient(transparent, rgba(10,28,18,0.75));
+      font-size: 0.7rem;
+      color: rgba(255,255,255,0.85);
+      letter-spacing: 0.06em;
+    }
+
+    /* ── Topics ── */
+    .topics {
+      max-width: 700px;
+      margin: 40px auto 0;
+      padding: 0 24px;
+      opacity: 0;
+      animation: riseIn 0.9s ease forwards 0.9s;
+      position: relative;
+      z-index: 1;
+    }
+
+    .topics-label {
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-align: center;
+      margin-bottom: 14px;
+    }
+
+    .topics-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 9px;
+      justify-content: center;
+    }
+
+    .topic-pill {
+      background: var(--white);
+      border: 1px solid rgba(74,140,92,0.22);
+      border-radius: 100px;
+      padding: 7px 16px;
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: var(--moss);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* ── Divider ── */
+    .divider {
+      max-width: 700px;
+      margin: 44px auto 0;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      opacity: 0;
+      animation: riseIn 0.9s ease forwards 1s;
+      position: relative;
+      z-index: 1;
+    }
+
+    .divider-line { flex: 1; height: 1px; background: rgba(74,140,92,0.2); }
+
+    /* ── Form ── */
+    .form-section {
+      max-width: 700px;
+      margin: 28px auto 0;
+      padding: 0 24px 80px;
+      position: relative;
+      z-index: 1;
+      opacity: 0;
+      animation: riseIn 1s ease forwards 1.05s;
+    }
+
+    .form-card {
+      background: var(--white);
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow:
+        0 1px 3px rgba(26,58,42,0.04),
+        0 8px 24px rgba(26,58,42,0.08),
+        0 32px 64px rgba(26,58,42,0.07);
+      border: 1px solid rgba(74,140,92,0.12);
+    }
+
+    .form-header {
+      background: linear-gradient(135deg, var(--forest) 0%, var(--moss) 100%);
+      padding: 15px 22px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .win-dot { width: 11px; height: 11px; border-radius: 50%; }
+    .win-dot:nth-child(1) { background: #ff5f57; }
+    .win-dot:nth-child(2) { background: #febc2e; }
+    .win-dot:nth-child(3) { background: #28c840; }
+
+    .form-header-text {
+      margin-left: auto;
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.35);
+    }
+
+    iframe {
+      display: block;
+      width: 100%;
+      height: 640px;
+      border: none;
+    }
+
+    /* ── Footer ── */
+    footer {
+      text-align: center;
+      padding: 16px 24px 40px;
+      font-size: 0.75rem;
+      color: var(--muted);
+      position: relative;
+      z-index: 1;
+    }
+
+    footer a { color: var(--leaf); text-decoration: none; }
+
+    /* ── Animation ── */
+    @keyframes riseIn {
+      from { opacity: 0; transform: translateY(22px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 600px) {
+      .hero-image { height: 360px; }
+      .hero-content { padding: 0 20px 36px; }
+      .intro-card { margin: -24px 16px 0; padding: 24px 20px; }
+      .intro-card-inner { flex-direction: column; gap: 12px; }
+      .photo-row { grid-template-columns: 1fr 1fr; height: auto; }
+      .photo-cell { height: 130px; }
+      .photo-cell:first-child { grid-column: 1 / -1; height: 160px; }
+      .stats-strip { margin: 24px 16px 0; }
+      .form-section { padding: 0 16px 60px; }
+      iframe { height: 580px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Hero image -->
+  <div class="hero-image">
+    <img
+      src="https://images.unsplash.com/photo-1448375240586-882707db888b?w=1400&q=80"
+      alt="Lush green forest canopy"
+    />
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <div class="hero-badge">
+        <div class="badge-dot"></div>
+        Grade 8 Research Project
+      </div>
+      <h1>The <em>Environmental Impact</em><br/>of Land Use in Food Production</h1>
+    </div>
+  </div>
+
+  <!-- Intro card -->
+  <div class="intro-card" style="max-width:680px; margin-left:auto; margin-right:auto; padding-left:24px; padding-right:24px;">
+    <div style="max-width:620px; margin:0 auto;">
+      <div class="intro-card-inner">
+        <div class="student-avatar">🌿</div>
+        <div class="intro-text-block">
+          <p>
+            Hello! My name is <strong>Anaya</strong>, and I'm a Grade 8 student researching
+            environmental sustainability and food production. My project explores how
+            <strong>land use in food production contributes to deforestation and biodiversity loss</strong>,
+            and how aware adults are of these impacts.
+            Your honest responses (3–5 mins) will help support a public awareness campaign
+            on sustainable thinking and consumption habits.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div style="max-width:640px; margin:0 auto; padding:0 24px;">
+    <div class="stats-strip">
+      <div class="stat-item">
+        <span class="stat-num">3–5</span>
+        <span class="stat-lbl">Minutes</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-num">11</span>
+        <span class="stat-lbl">Questions</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-num">100%</span>
+        <span class="stat-lbl">Anonymous</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-num">Free</span>
+        <span class="stat-lbl">No sign-up</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Photo grid -->
+  <div class="photo-grid">
+    <p class="photo-grid-label">Issues this survey explores</p>
+    <div class="photo-row">
+      <div class="photo-cell">
+        <img src="https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=800&q=80" alt="Deforestation"/>
+        <div class="caption">🌳 Deforestation &amp; Forest Loss</div>
+      </div>
+      <div class="photo-cell">
+        <img src="https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=600&q=80" alt="Biodiversity"/>
+        <div class="caption">🦋 Biodiversity</div>
+      </div>
+      <div class="photo-cell">
+        <img src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=600&q=80" alt="Agriculture"/>
+        <div class="caption">🌾 Agricultural Land</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Topics -->
+  <div class="topics">
+    <p class="topics-label">Topics covered</p>
+    <div class="topics-list">
+      <div class="topic-pill"><span>🌳</span> Deforestation</div>
+      <div class="topic-pill"><span>🦋</span> Biodiversity Loss</div>
+      <div class="topic-pill"><span>🌾</span> Agricultural Land Use</div>
+      <div class="topic-pill"><span>🛒</span> Food Purchasing Habits</div>
+      <div class="topic-pill"><span>♻️</span> Sustainable Consumption</div>
+      <div class="topic-pill"><span>🌍</span> Carbon Emissions</div>
+    </div>
+  </div>
+
+  <!-- Divider -->
+  <div class="divider">
+    <div class="divider-line"></div>
+    <span style="font-size:1.1rem; color:var(--leaf);">🌿</span>
+    <div class="divider-line"></div>
+  </div>
+
+  <!-- Form -->
+  <div class="form-section">
+    <div class="form-card">
+      <div class="form-header">
+        <div class="win-dot"></div>
+        <div class="win-dot"></div>
+        <div class="win-dot"></div>
+        <span class="form-header-text">Survey · Microsoft Forms</span>
+      </div>
+      <iframe
+        src="https://forms.office.com/Pages/ResponsePage.aspx?id=0XHIlzG5xUqIMvlT87UwU0h0VBsbvJVBjvM3yd50vW5UMVpDT1hTOVZMVEFaRTVKSVNWSlpKNTJYQi4u&embed=true"
+        allowfullscreen
+        webkitallowfullscreen
+        mozallowfullscreen
+        msallowfullscreen
+      ></iframe>
+    </div>
+  </div>
+
+  <footer>
+    Photos: <a href="https://unsplash.com" target="_blank">Unsplash</a> &nbsp;·&nbsp;
+    Responses collected securely via Microsoft Forms &nbsp;·&nbsp;
+    Your data will not be shared
+  </footer>
+
+</body>
+</html>
